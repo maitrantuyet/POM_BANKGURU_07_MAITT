@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="BANKGURU" parallel="false">
+
+
+  <test name="Run On Firefox">
+    <classes>
+      <class name="com.bankguru.account.Account_01_RegisterAndLoginToSystem"/>
+    </classes>
+  </test> 
+</suite> 
