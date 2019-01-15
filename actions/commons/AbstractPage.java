@@ -312,6 +312,17 @@ public class AbstractPage {
 	      }
 	  }
 	 
+	 public boolean isImageDisplayed(WebDriver driver, String locator) {
+		  try {
+		   WebElement element = driver.findElement(By.xpath(locator));
+		   JavascriptExecutor js = (JavascriptExecutor) driver;
+		   return (boolean) js.executeScript("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", element);
+		  } catch (Exception e) {
+		   e.getMessage();
+		   return false;
+		  }
+		 }
+	 
 	 public void waitToElementVisible(WebDriver driver, String locator) {
 		 By byLocator = By.xpath(locator);
 		 WebDriverWait waitExplicit = new WebDriverWait(driver, 30);

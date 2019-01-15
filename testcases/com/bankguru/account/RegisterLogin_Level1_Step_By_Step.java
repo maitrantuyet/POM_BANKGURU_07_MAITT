@@ -11,7 +11,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class Account_01_RegisterAndLoginToSystem {
+public class RegisterLogin_Level1_Step_By_Step {
 	WebDriver driver;
 	private String loginUrl, email, userID, password;
 
