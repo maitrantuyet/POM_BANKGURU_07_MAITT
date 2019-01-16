@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -12,19 +14,18 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import commons.AbstractPage;
+import commons.AbstractTest;
 
-public class RegisterLogin_Level2_AbstractPage_MultiBrowser {
-	WebDriver driver;
+public class RegisterLogin_Level2_AbstractPage_MultiBrowser extends AbstractTest {
+	private WebDriver driver;
 	private AbstractPage abstractPage;
 	private String loginUrl, email, userID, password;
 	
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browserName) {
-		driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
+		driver = openMultiBrowser(browserName);
+		
 		abstractPage = new AbstractPage();
 		email = "Seleniumclass" + randomNumber() + "@gmail.com";
 		System.out.println("Email =" + email);
