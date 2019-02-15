@@ -13,52 +13,55 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import commons.AbstractPage;
+
 import commons.AbstractTest;
+import pageObjects.HomePageObject;
+import pageObjects.LoginPageObject;
+import pageObjects.RegisterPageObject;
 
 public class RegisterLogin_Level3_PageObject extends AbstractTest {
 	private WebDriver driver;
-	private AbstractPage abstractPage;
 	private String loginUrl, email, userID, password;
+	private LoginPageObject loginPage;
+	private RegisterPageObject registerPage;
+	private HomePageObject homepage;
 	
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browserName) {
 		driver = openMultiBrowser(browserName);
-		
-		abstractPage = new AbstractPage();
 		email = "Seleniumclass" + randomNumber() + "@gmail.com";
-		System.out.println("Email =" + email);
+		//Mo URL len > vao LoginPage
+		loginPage = new LoginPageObject();
 	}
 
 	@Test
 	public void TC01_RegisterToSystem() {
-
-		abstractPage.openAnyUrl(driver, "http://demo.guru99.com/v4/index.php");
-
-		loginUrl = abstractPage.getCurrentUrl(driver);
-
-		abstractPage.clickToElement(driver, "//a[text() ='here']");
-		Assert.assertTrue(abstractPage.isControlDisplayed(driver, "//input[@name='emailid']"));
-
-		abstractPage.sendkeyToElement(driver, "//input[@name='emailid']", email);
-		abstractPage.clickToElement(driver, "//input[@name= 'btnLogin']");
-		userID = abstractPage.getTextElement(driver, "//td[text() ='User ID :']/following-sibling::td");
-		password = abstractPage.getTextElement(driver, "//td[text() ='Password :']/following-sibling::td");
-
-		System.out.println("UserID =" + userID);
-		System.out.println("Password =" + password);
+		loginUrl = loginPage.getLoginPageURL();
+		loginPage.clickToHereLink();
+		//Click HereLink > Vao RegisterPage
+		registerPage = new RegisterPageObject();
+		registerPage.inputToEmailIDTextbox(email);
+		registerPage.clickToSubmitButton();
+		userID = registerPage.getUserIDText();
+		password = registerPage.getPasswordText();
+		
 	}
 
 	@Test
 	public void TC02_LoginWithAboveInformation() {
-		abstractPage.openAnyUrl(driver, loginUrl);
-		abstractPage.sendkeyToElement(driver, "//input[@name='uid']", userID);
-		abstractPage.sendkeyToElement(driver, "//input[@name='password']", password);
-		abstractPage.clickToElement(driver, "//input[@name='btnLogin']");
-		Assert.assertTrue(abstractPage.isControlDisplayed(driver,
-				"//marquee[text()= \"Welcome To Manager's Page of Guru99 Bank\"]"));
-		Assert.assertTrue(abstractPage.isControlDisplayed(driver, "//td[text() ='Manger Id : " + userID + "']"));
+		registerPage.openLoginPage(loginUrl);
+		
+		//Open Login URL > Vao Login lai
+		loginPage = new LoginPageObject();
+		
+		loginPage.inputToUserIDTextbox(userID);
+		loginPage.inputToPasswordTextbox(password);
+		loginPage.clickToLoginButton();
+		
+		//Click to login vao trang home page
+		homepage = new HomePageObject();
+		Assert.assertTrue(homepage.isHomePageDisplayed());
 	}
 
 	@AfterClass

@@ -4,22 +4,10 @@
   <test name="Run On Firefox">
   <parameter name ="browser" value ="firefox"/>
     <classes>
-       <class name="com.bankguru.account.RegisterLogin_Level2_AbstractPage_MultiBrowser"/>
+       <class name="com.bankguru.account.RegisterLogin_Level3_PageObject"/>
     </classes>
   </test> 
   
-  <test name="Run On Chrome">
-  <parameter name ="browser" value ="chrome"/>
-    <classes>
-       <class name="com.bankguru.account.RegisterLogin_Level2_AbstractPage_MultiBrowser"/>
-    </classes>
-  </test> 
-  
-  <test name="Run On ChromeHeadless">
-  <parameter name ="browser" value ="chromeheadless"/>
-    <classes>
-       <class name="com.bankguru.account.RegisterLogin_Level2_AbstractPage_MultiBrowser"/>
-    </classes>
-  </test> 
+ 
   
 </suite> 
