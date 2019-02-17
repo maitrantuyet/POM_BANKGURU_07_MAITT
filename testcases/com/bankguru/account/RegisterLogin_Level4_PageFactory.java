@@ -17,14 +17,11 @@ import org.testng.annotations.Test;
 import commons.AbstractTest;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
+import pageObjects.PageFactoryManager;
 import pageObjects.RegisterPageObject;
 
-public class RegisterLogin_Level3_PageObject extends AbstractTest {
-	private WebDriver driver;
-	private String loginUrl, email, userID, password;
-	private LoginPageObject loginPage;
-	private RegisterPageObject registerPage;
-	private HomePageObject homepage;
+public class RegisterLogin_Level4_PageFactory extends AbstractTest {
+	
 	
 	@Parameters("browser")
 	@BeforeClass
@@ -32,16 +29,15 @@ public class RegisterLogin_Level3_PageObject extends AbstractTest {
 		driver = openMultiBrowser(browserName);
 		System.out.println("Driver in Testcase =" + driver);
 		email = "Seleniumclass" + randomNumber() + "@gmail.com";
-		//Mo URL len > vao LoginPage
-		loginPage = new LoginPageObject(driver);
+		
+		//Mo URL len > vao LoginPage - 1 lan
+		loginPage = PageFactoryManager.getLoginPage(driver);
 	}
 
 	@Test
 	public void TC01_RegisterToSystem() {
 		loginUrl = loginPage.getLoginPageURL();
-		loginPage.clickToHereLink();
-		//Click HereLink > Vao RegisterPage
-		registerPage = new RegisterPageObject(driver);
+		registerPage= loginPage.clickToHereLink();
 		registerPage.inputToEmailIDTextbox(email);
 		registerPage.clickToSubmitButton();
 		userID = registerPage.getUserIDText();
@@ -51,29 +47,27 @@ public class RegisterLogin_Level3_PageObject extends AbstractTest {
 
 	@Test
 	public void TC02_LoginWithAboveInformation() {
-		registerPage.openLoginPage(loginUrl);
-		
-		//Open Login URL > Vao Login lai
-		loginPage = new LoginPageObject(driver);
-		
+		loginPage = registerPage.openLoginPage(loginUrl);
 		loginPage.inputToUserIDTextbox(userID);
 		loginPage.inputToPasswordTextbox(password);
-		loginPage.clickToLoginButton();
-		
-		//Click to login vao trang home page
-		homepage = new HomePageObject(driver);
+		homepage = loginPage.clickToLoginButton();
 		Assert.assertTrue(homepage.isHomePageDisplayed());
+	}
+	
+	@Test
+	public void TC03_OpenMultiplePages() {
+		
 	}
 
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
 	}
-
-	public int randomNumber() {
-		Random random = new Random();
-		int number = random.nextInt(999999);
-		return number;
-	}
+	
+	private WebDriver driver;
+	private String loginUrl, email, userID, password;
+	private LoginPageObject loginPage;
+	private RegisterPageObject registerPage;
+	private HomePageObject homepage;
 
 }

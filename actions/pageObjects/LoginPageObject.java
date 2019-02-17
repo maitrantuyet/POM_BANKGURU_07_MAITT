@@ -8,6 +8,11 @@ import pageUIs.LoginPageUI;
 public class LoginPageObject extends AbstractPage {
 	WebDriver driver;
 	
+	public LoginPageObject(WebDriver driverMapping) {
+		driver = driverMapping;
+		System.out.println("Driver in LoginPageObject =" + driver);
+	}
+	
 	public String getLoginPageURL() {
 		return getCurrentUrl(driver);
 	}
@@ -22,13 +27,15 @@ public class LoginPageObject extends AbstractPage {
 		sendkeyToElement(driver, LoginPageUI.PASSWORD_TEXTBOX, password);
 	}
 	
-	public void clickToLoginButton() {
+	public HomePageObject clickToLoginButton() {
 		waitToElementVisible(driver, LoginPageUI.LOGIN_BUTTON);
 		clickToElement(driver, LoginPageUI.LOGIN_BUTTON);
+		return PageFactoryManager.getHomePage(driver);
 	}
 	
-	public void clickToHereLink() {
+	public RegisterPageObject clickToHereLink() {
 		waitToElementVisible(driver, LoginPageUI.HERE_LINK);
 		clickToElement(driver, LoginPageUI.HERE_LINK);
+		return PageFactoryManager.getRegisterPage(driver);
 	}
 }

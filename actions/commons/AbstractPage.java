@@ -13,6 +13,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import pageObjects.DepositPageObject;
+import pageObjects.FundTransferPageObject;
+import pageObjects.HomePageObject;
+import pageObjects.NewAccountPageObject;
+import pageObjects.NewCustomerPageObject;
+import pageObjects.PageFactoryManager;
+import pageUIs.AbstractPageUI;
+import pageUIs.DepositPageUI;
+import pageUIs.HomePageUI;
+import pageUIs.NewAccountPageUI;
+import pageUIs.NewCustomerPageUI;
+
 public class AbstractPage {
 	// Web Browser
 	public void openAnyUrl(WebDriver driver, String url) {
@@ -219,138 +231,172 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		driver.switchTo().frame(element);
 	}
-	
+
 	public void doubleClickToElement(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		Actions action = new Actions(driver);
 		action.doubleClick(element);
 	}
-	
+
 	public void hoverMouseToElement(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		Actions action = new Actions(driver);
 		action.moveToElement(element);
 	}
-	
+
 	public void rightClick(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		Actions action = new Actions(driver);
 		action.contextClick(element).perform();
 	}
-	
+
 	public void dragAndDrop(WebDriver driver, String locatorOne, String locatorTwo) {
 		WebElement elementOne = driver.findElement(By.xpath(locatorOne));
 		WebElement elementTwo = driver.findElement(By.xpath(locatorTwo));
 		Actions action = new Actions(driver);
 		action.dragAndDrop(elementOne, elementTwo).build().perform();
 	}
-	
+
 	public void keyPress(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		Actions action = new Actions(driver);
 		action.sendKeys(element, Keys.ENTER).perform();
 	}
-	
+
 	public void uploadSingleFile(WebDriver driver, String locator, String filename) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		element.sendKeys(filename);
 	}
-	
-	public void uploadMultipleFile(WebDriver driver, String locator, String filename01, String filename02, String filename03) {
+
+	public void uploadMultipleFile(WebDriver driver, String locator, String filename01, String filename02,
+			String filename03) {
 		WebElement element = driver.findElement(By.xpath(locator));
-		element.sendKeys(filename01  + "\n" + filename02  + "\n" + filename03);
+		element.sendKeys(filename01 + "\n" + filename02 + "\n" + filename03);
 	}
-	
+
 	public Object executeJavascriptToBrowser(WebDriver driver, String javaSript) {
-	      try {
-	          JavascriptExecutor js = (JavascriptExecutor) driver;
-	          return js.executeScript(javaSript);
-	      } catch (Exception e) {
-	          e.getMessage();
-	          return null;
-	      }
-	  }
-	
-	 public Object executeJavascriptToElement(WebDriver driver, WebElement element) {
-	      try {
-	          JavascriptExecutor js = (JavascriptExecutor) driver;
-	          return js.executeScript("arguments[0].click();", element);
-	      } catch (Exception e) {
-	          e.getMessage();
-	          return null;
-	      }
-	  }
-	 
-	 public Object scrollToBottomPage(WebDriver driver) {
-	        try {
-	            JavascriptExecutor js = (JavascriptExecutor) driver;
-	            return js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-	        } catch (Exception e) {
-	            e.getMessage();
-	            return null;
-	        }
-	    }
-	 
-	 public void scrollToElement(WebDriver driver, String locator) {
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			return js.executeScript(javaSript);
+		} catch (Exception e) {
+			e.getMessage();
+			return null;
+		}
+	}
+
+	public Object executeJavascriptToElement(WebDriver driver, WebElement element) {
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			return js.executeScript("arguments[0].click();", element);
+		} catch (Exception e) {
+			e.getMessage();
+			return null;
+		}
+	}
+
+	public Object scrollToBottomPage(WebDriver driver) {
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			return js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+		} catch (Exception e) {
+			e.getMessage();
+			return null;
+		}
+	}
+
+	public void scrollToElement(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-		 
-	 }
-	 
-	 public void highlightElement(WebDriver driver, WebElement element) {
-	      JavascriptExecutor js = (JavascriptExecutor) driver;
-	      js.executeScript("arguments[0].style.border='6px groove red'", element);
-	  }
-	 
-	 public Object removeAttributeInDOM(WebDriver driver, WebElement element, String attribute) {
-	      try {
-	          JavascriptExecutor js = (JavascriptExecutor) driver;
-	          return js.executeScript("arguments[0].removeAttribute('" + attribute + "');", element);
-	      } catch (Exception e) {
-	          e.getMessage();
-	          return null;
-	      }
-	  }
-	 
-	 public boolean isImageDisplayed(WebDriver driver, String locator) {
-		  try {
-		   WebElement element = driver.findElement(By.xpath(locator));
-		   JavascriptExecutor js = (JavascriptExecutor) driver;
-		   return (boolean) js.executeScript("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", element);
-		  } catch (Exception e) {
-		   e.getMessage();
-		   return false;
-		  }
-		 }
-	 
-	 public void waitToElementVisible(WebDriver driver, String locator) {
-		 By byLocator = By.xpath(locator);
-		 WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
-		 waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
-	 }
-	 
-	 public void waitToElementPresence(WebDriver driver, String locator) {
-		 By byLocator = By.xpath(locator);
-		 WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
-		 waitExplicit.until(ExpectedConditions.presenceOfElementLocated(byLocator));
-	 }
-	 
-	 public void waitToElementClickable(WebDriver driver, String locator) {
-		 By byLocator = By.xpath(locator);
-		 WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
-		 waitExplicit.until(ExpectedConditions.elementToBeClickable(byLocator));
-		 driver.findElement(byLocator).click();
-	 }
-	 
-	 public void waitToElementNotVisible(WebDriver driver, String locator) {
-		 By byLocator = By.xpath(locator);
-		 WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
-		 waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
-	 }
-	 
-	 public void waitForAlertPresence(WebDriver driver) {
-		 WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
-		 waitExplicit.until(ExpectedConditions.alertIsPresent());
-	 }
 
+	}
+
+	public void highlightElement(WebDriver driver, WebElement element) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].style.border='6px groove red'", element);
+	}
+
+	public Object removeAttributeInDOM(WebDriver driver, WebElement element, String attribute) {
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			return js.executeScript("arguments[0].removeAttribute('" + attribute + "');", element);
+		} catch (Exception e) {
+			e.getMessage();
+			return null;
+		}
+	}
+
+	public boolean isImageDisplayed(WebDriver driver, String locator) {
+		try {
+			WebElement element = driver.findElement(By.xpath(locator));
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			return (boolean) js.executeScript(
+					"return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0",
+					element);
+		} catch (Exception e) {
+			e.getMessage();
+			return false;
+		}
+	}
+
+	public void waitToElementVisible(WebDriver driver, String locator) {
+		By byLocator = By.xpath(locator);
+		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
+	}
+
+	public void waitToElementPresence(WebDriver driver, String locator) {
+		By byLocator = By.xpath(locator);
+		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
+		waitExplicit.until(ExpectedConditions.presenceOfElementLocated(byLocator));
+	}
+
+	public void waitToElementClickable(WebDriver driver, String locator) {
+		By byLocator = By.xpath(locator);
+		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
+		waitExplicit.until(ExpectedConditions.elementToBeClickable(byLocator));
+		driver.findElement(byLocator).click();
+	}
+
+	public void waitToElementNotVisible(WebDriver driver, String locator) {
+		By byLocator = By.xpath(locator);
+		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
+		waitExplicit.until(ExpectedConditions.invisibilityOfElementLocated(byLocator));
+	}
+
+	public void waitForAlertPresence(WebDriver driver) {
+		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
+		waitExplicit.until(ExpectedConditions.alertIsPresent());
+	}
+
+	// 13 ham mo ra 13 page ma khong can viet di viet lai (169 page trong tang Page
+	// Object)
+	public NewCustomerPageObject openNewCustomerPage(WebDriver driver) {
+		waitToElementVisible(driver, AbstractPageUI.NEW_CUSTOMER_LINK);
+		clickToElement(driver, AbstractPageUI.NEW_CUSTOMER_LINK);
+		return PageFactoryManager.getNewCustomerPage(driver);
+	}
+
+	public NewAccountPageObject openNewAccountPage(WebDriver driver) {
+		waitToElementVisible(driver, AbstractPageUI.NEW_ACCOUNT_LINK);
+		clickToElement(driver, AbstractPageUI.NEW_ACCOUNT_LINK);
+		return PageFactoryManager.getNewAccountPage(driver);
+	}
+
+	public DepositPageObject openDepositPage(WebDriver driver) {
+		waitToElementVisible(driver, AbstractPageUI.DEPOSIT_LINK);
+		clickToElement(driver, AbstractPageUI.DEPOSIT_LINK);
+		return PageFactoryManager.getDepositPage(driver);
+	}
+
+	public FundTransferPageObject openFundTransferPage(WebDriver driver) {
+		waitToElementVisible(driver, AbstractPageUI.FUND_TRANSFER_LINK);
+		clickToElement(driver, AbstractPageUI.FUND_TRANSFER_LINK);
+		return PageFactoryManager.getFundTransferPage(driver);
+	}
+
+	public HomePageObject openHomePage(WebDriver driver) {
+		waitToElementVisible(driver, AbstractPageUI.HOME_PAGE_LINK);
+		clickToElement(driver, AbstractPageUI.HOME_PAGE_LINK);
+		return PageFactoryManager.getHomePage(driver);
+	}
 }

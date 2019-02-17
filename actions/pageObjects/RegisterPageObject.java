@@ -8,6 +8,11 @@ import pageUIs.RegisterPageUI;
 public class RegisterPageObject extends AbstractPage {
 	WebDriver driver;
 	
+	public RegisterPageObject(WebDriver driverMapping) {
+		driver = driverMapping;
+		
+	}
+	
 	public void inputToEmailIDTextbox(String email) {
 		waitToElementVisible(driver, RegisterPageUI.EMAIL_ID_TEXTBOX);
 		sendkeyToElement(driver, RegisterPageUI.EMAIL_ID_TEXTBOX, email);
@@ -28,7 +33,8 @@ public class RegisterPageObject extends AbstractPage {
 		return getTextElement(driver, RegisterPageUI.PASSWORD_TEXT);
 	}
 	
-	public void openLoginPage(String loginPageURL) {
+	public LoginPageObject openLoginPage(String loginPageURL) {
 		openAnyUrl(driver, loginPageURL);
+		return PageFactoryManager.getLoginPage(driver);
 	}
 }

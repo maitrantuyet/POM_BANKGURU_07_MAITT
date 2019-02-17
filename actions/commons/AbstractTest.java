@@ -1,5 +1,6 @@
 package commons;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class AbstractTest {
 	private WebDriver driver;
-	public WebDriver openMultiBrowser(String browserName) {
+	protected WebDriver openMultiBrowser(String browserName) {
 		if(browserName.equals("firefox")) {
 			driver = new FirefoxDriver();
 		} else if(browserName.equals("chrome")) {
@@ -27,6 +28,12 @@ public class AbstractTest {
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		return driver;
+	}
+	
+	protected int randomNumber() {
+		Random random = new Random();
+		int number = random.nextInt(999999);
+		return number;
 	}
 
 }
