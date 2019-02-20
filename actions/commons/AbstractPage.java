@@ -76,6 +76,13 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		element.click();
 	}
+	
+	public void clickToElement(WebDriver driver, String locator, String... dynamicValue) {
+		locator = String.format(locator, (Object[])dynamicValue);
+		System.out.println("Click to dynamic locator =" + locator );
+		WebElement element = driver.findElement(By.xpath(locator));
+		element.click();
+	}
 
 	public void sendkeyToElement(WebDriver driver, String locator, String value) {
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -160,8 +167,17 @@ public class AbstractPage {
 			element.click();
 		}
 	}
-
+	
+	//Xpath cố định
 	public boolean isControlDisplayed(WebDriver driver, String locator) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		return element.isDisplayed();
+	}
+	
+	//xpath, locator động
+	public boolean isControlDisplayed(WebDriver driver, String locator, String... dynamicValue) {
+		locator = String.format(locator, (Object[])dynamicValue);
+		System.out.println("Check dynamic locator displayed =" + locator );
 		WebElement element = driver.findElement(By.xpath(locator));
 		return element.isDisplayed();
 	}
@@ -343,6 +359,15 @@ public class AbstractPage {
 		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
 	}
+	
+	//waitToElementVisible(driver, "//a[text()='']", "New Customer"];
+	public void waitToElementVisible(WebDriver driver, String locator, String... dynamicValue) {
+		locator = String.format(locator, (Object[])dynamicValue);
+		System.out.println("Wait to dynamic locator =" + locator );
+		By byLocator = By.xpath(locator);
+		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
+	}
 
 	public void waitToElementPresence(WebDriver driver, String locator) {
 		By byLocator = By.xpath(locator);
@@ -367,7 +392,32 @@ public class AbstractPage {
 		WebDriverWait waitExplicit = new WebDriverWait(driver, 30);
 		waitExplicit.until(ExpectedConditions.alertIsPresent());
 	}
-
+	
+	//open it page
+	public AbstractPage openDynamicPage (WebDriver driver, String pageName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+		
+		switch(pageName) {
+		case "New Customer":
+			return PageFactoryManager.getNewCustomerPage(driver);
+		case "New Account":
+			return PageFactoryManager.getNewAccountPage(driver);
+		case "Deposit":
+			return PageFactoryManager.getDepositPage(driver);
+		case "Fund Transfer":
+			return PageFactoryManager.getFundTransferPage(driver);
+		default:
+			return PageFactoryManager.getHomePage(driver);
+		}
+	}
+	
+	//open nhieu page (100-1000 pages)
+	public void openDynamicMorePage (WebDriver driver, String pageName) {
+		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+	}
+	
 	// 13 ham mo ra 13 page ma khong can viet di viet lai (169 page trong tang Page
 	// Object)
 	public NewCustomerPageObject openNewCustomerPage(WebDriver driver) {

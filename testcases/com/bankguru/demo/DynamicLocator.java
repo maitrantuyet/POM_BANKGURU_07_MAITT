@@ -10,7 +10,7 @@ public class DynamicLocator {
 		String DYNAMIC_LINK_1_PARAM = "//a[text()= '%s']";
 		String DYNAMIC_LINK_2_PARAM = "//a[text()= '%s']//a[text()= '%s']";
 		String DYNAMIC_LINK_3_PARAM = "//a[text()= '%s']//a[text()= '%s']//a[text()= '%s']";
-		String AFGHANISTAN = "//td[@data-key='females' and text()='384187']/following-sibling::td[@data-key='country' and text()='Afghanistan']/following-sibling::td[@data-key='males' and text()='407124']/preceding-sibling::td[@class='qgrd-actions']/button[@class='qgrd-edit-row-btn']";
+		String DYNAMIC_GRID_TABLE = "//td[@data-key='females' and text()='%s']/following-sibling::td[@data-key='country' and text()='%s']/following-sibling::td[@data-key='males' and text()='%s']/preceding-sibling::td[@class='qgrd-actions']/button[@class='qgrd-edit-row-btn']";
 		
 
 		clickToElement(NEW_CUSTOMER_LINK);
@@ -26,19 +26,31 @@ public class DynamicLocator {
 		clickToElement(DYNAMIC_LINK_2_PARAM, "Female", "Afghanistan");
 		clickToElement(DYNAMIC_LINK_2_PARAM, "Male", "Albania");
 		
+		clickToElement(DYNAMIC_LINK_3_PARAM, "Female", "Afghanistan", "Male");
+		clickToElement(DYNAMIC_GRID_TABLE, "384187", "Afghanistan", "407124");
+		
 	}
 
-	public static void clickToElement(String pageName) {
+//	public static void clickToElement(String pageName) {
 		//Click vao 1 page
-		System.out.println(pageName);
-	}
+//		System.out.println(pageName);
+//	}
 
-	public static void clickToElement(String pageName, String dynamicValue) {
+//	public static void clickToElement(String pageName, String dynamicValue) {
 		// Click vao 2 tham so dong
-		System.out.println(String.format(pageName, dynamicValue));
-	}
-	public static void clickToElement(String pageName, String dynamicValue_01, String dynamicValue_02) {
+//		System.out.println(String.format(pageName, dynamicValue));
+//	}
+//	public static void clickToElement(String pageName, String dynamicValue_01, String dynamicValue_02) {
 		// Click vao 2 tham so dong
-		System.out.println(String.format(pageName, dynamicValue_01, dynamicValue_02));
+//		System.out.println(String.format(pageName, dynamicValue_01, dynamicValue_02));
+//	}
+//	public static void clickToElement(String pageName, String dynamicValue_01, String dynamicValue_02, String dynamicValue_03) {
+		// Click vao 3 tham so dong
+//		System.out.println(String.format(pageName, dynamicValue_01, dynamicValue_02, dynamicValue_03));
+//	}
+	
+	//Viet lai ham click tóm lai cac tham so dong
+	public static void clickToElement(String locator, String... dynamicValue) {
+		System.out.println("Click to element = " + String.format(locator, (Object[])dynamicValue));
 	}
 }
