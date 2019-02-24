@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import commons.AbstractPage;
 import pageUIs.HomePageUI;
+import pageUIs.NewCustomerPageUI;
 
 public class HomePageObject extends AbstractPage {
 	WebDriver driver;
@@ -15,8 +16,14 @@ public class HomePageObject extends AbstractPage {
 	
 	public boolean isHomePageDisplayed () {
 		waitToElementVisible(driver, HomePageUI.HOMEPAGE_WELLCOME_MESSAGE);
-		return isControlDisplayed(driver, HomePageUI.HOMEPAGE_WELLCOME_MESSAGE);
+		boolean status = isControlDisplayed(driver, HomePageUI.HOMEPAGE_WELLCOME_MESSAGE);
+		System.out.println("Home page displayed status =" + status);
+		return status;
 	}
-
+	
+	public boolean isNewCustomerPageUnDisplayed() {
+		waitToElementInVisible(driver, NewCustomerPageUI.NEW_CUSTOMER_TEXT);
+		return isControlUndisplayed(driver, NewCustomerPageUI.NEW_CUSTOMER_TEXT);
+	}
 	
 }
